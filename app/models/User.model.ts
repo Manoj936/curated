@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import mongoose, { models, Schema, model, Mongoose } from "mongoose";
 
-const userEnum = ["user", "admin", "superuser"] as const;
+const userEnum = ["user", "seller", "superuser"] as const;
 
 export interface IUser {
   name: String;

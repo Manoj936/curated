@@ -1,10 +1,10 @@
 import mongoose, { Schema, model, models } from "mongoose";
 import { IUser } from "./User.model";
 
-const productType = ["image", "video"] as const;
+const productType = ["image", "video", "ebook"] as const;
 const ImageTypes = ["SQUARE", "WIDE", "PORTRAIT", "LANDSCAPE"] as const;
 const VideoTypes = ["360p", "480", "720p", "1080p", "2k", "4k"] as const;
-const CurrencyTypes = ["inr", "usd", "euro"] as const;
+const CurrencyTypes = ["INR", "USD"] as const;
 const LicenceTypes = ["personal", "commercial"] as const;
 const ebookFileTypes = ["pdf", "epub", "mobi"] as const;
 /* Interfaces */

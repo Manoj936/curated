@@ -1,5 +1,6 @@
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
+import { sellerRole, superuserRole } from "./app/libs/constant";
 
 export default withAuth(
   function middleware() {
@@ -34,14 +35,14 @@ export default withAuth(
         }
 
         // Admin routes require admin role
-        if (pathname.startsWith("/admin")) {
-          return token?.role === "admin";
+        if (pathname.startsWith("/seller")) {
+          return (token?.role === sellerRole || token?.role === superuserRole);
         }
 
         //Superadmin routes require superadmin role
 
         if (pathname.startsWith("/superuser")) {
-          return token?.role === "superuser";
+          return token?.role === superuserRole;
         }
 
         // All other routes require authentication
