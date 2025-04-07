@@ -1,18 +1,9 @@
-import React from 'react'
-import { Button } from "@/components/ui/button"
-import Imageupload from './components/Imageupload'
-import { IKUploadResponse } from 'imagekitio-next/dist/types/components/IKUpload/props'
+"use client";
+
+import React from "react";
+
 function page() {
-
-
-  return (
-
-    
-    <div className='flex justify-center items-center'>
-      <Imageupload ></Imageupload>
-    </div>
-   
-  )
+  return <div className="flex justify-center items-center"></div>;
 }
 
-export default page
+export default page;

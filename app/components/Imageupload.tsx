@@ -6,7 +6,7 @@ import {
   UploadError,
 } from "imagekitio-next/dist/types/components/IKUpload/props";
 import { Button } from "@/components/ui/button";
-function Imageupload({ proceedSuccess }: { proceedSuccess: IKUploadResponse }) {
+function Imageupload({ proceedSuccess }: { proceedSuccess?: IKUploadResponse }) {
   const [errors, setErrors] = useState<string | null>();
   const [isUploading, setIsuploading] = useState<boolean>(false);
   const ikUploadRefTest = useRef<any>(null);
