@@ -33,10 +33,13 @@ export default withAuth(
         ) {
           return true;
         }
-
+        // seller registration page 
+        if (pathname.startsWith("/seller-register")) {
+          return true;
+        }
         // Admin routes require admin role
         if (pathname.startsWith("/seller")) {
-          return (token?.role === sellerRole || token?.role === superuserRole);
+          return token?.role === sellerRole || token?.role === superuserRole;
         }
 
         //Superadmin routes require superadmin role

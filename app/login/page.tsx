@@ -39,7 +39,7 @@ function Login() {
     // You can now call your API with the validated `data`
   }
   return (
-    <div className="max-w-md mx-auto">
+    <div className="max-w-md mx-auto ">
       <Card className="w-full">
         <CardHeader>
           <CardTitle className="text-3xl">Login</CardTitle>

@@ -4,8 +4,11 @@ import { Inter } from "next/font/google";
 import Script from "next/script";
 import Providers from "./components/providers";
 import Header from "./components/Header";
-
-const inter = Inter({ subsets: ["latin"] });
+import { Poppins } from "next/font/google";
+export const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"], // optional weights
+});
 
 export const metadata = {
   title: "ImageKit Next.js Integration",
@@ -19,14 +22,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={poppins.className}>
         <Script
           src="https://checkout.razorpay.com/v1/checkout.js"
           strategy="lazyOnload"
         />
         <Providers>
           <Header />
-          <main className="container mx-auto px-4 py-8">{children}</main>
+          <main>{children}</main>
         </Providers>
       </body>
     </html>

@@ -20,7 +20,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { ChevronDownIcon, PhoneIcon } from "@heroicons/react/20/solid";
-import { Home, User, GalleryVerticalEndIcon } from "lucide-react";
+import { Home, User, GalleryVerticalEndIcon, DramaIcon } from "lucide-react";
 import Link from "next/link";
 import { showToast } from "@/components/ui/toast";
 import { AppName } from "../libs/constant";
@@ -169,9 +169,10 @@ export default function Header() {
           <a href="#" className="text-sm/6 font-semibold text-gray-900">
             Marketplace
           </a>
-          <a href="#" className="text-sm/6 font-semibold text-gray-900">
-            Company
-          </a>
+          <Link href="/seller-register" className="flex justify-between text-sm/6 font-bold text-gray-900">
+            <DramaIcon></DramaIcon>
+            Seller!
+          </Link>
         </PopoverGroup>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           <Link href="/login" className="text-sm/6 font-semibold text-gray-900">
@@ -238,9 +239,9 @@ export default function Header() {
                 </a>
                 <a
                   href="#"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
+                  className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-gray-900 hover:bg-gray-50"
                 >
-                  Company
+                  Seller!
                 </a>
               </div>
               <div className="py-6">
