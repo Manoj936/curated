@@ -1,6 +1,6 @@
 import {
   Card,
-  CardAction,
+  
   CardDescription,
   CardFooter,
   CardHeader,
@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import React from "react";
 import * as LucideIcons from "lucide-react";
+import PageHeader from "@/app/components/chunks/PageHeader";
 
 const cardsData = [
   {
@@ -51,10 +52,7 @@ function Page() {
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-10 max-w-7xl mx-auto px-4">
-        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-          ADMIN DASHBOARD
-        </h1>
-       
+        <PageHeader heading="ADMIN DASHBOARD" />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-10 max-w-7xl mx-auto px-4">
         {cardsData.map((card, index) => {
@@ -66,7 +64,9 @@ function Page() {
             >
               <CardHeader className="flex flex-row items-start justify-between gap-2">
                 <div>
-                  <CardDescription className="scroll-m-20 text-2xl text-gray-900 font-extrabold tracking-tight lg:text-4xl uppercase">{card.title}</CardDescription>
+                  <CardDescription className="scroll-m-20 text-2xl text-gray-900 font-extrabold tracking-tight lg:text-4xl uppercase">
+                    {card.title}
+                  </CardDescription>
                   <CardTitle className="text-2xl font-extrabold text-gray-600 tabular-nums @[250px]/card:text-3xl">
                     {card.value}
                   </CardTitle>
