@@ -1,9 +1,85 @@
-import React from 'react'
+import {
+  Card,
+  CardAction,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import React from "react";
+import * as LucideIcons from "lucide-react";
 
-function page() {
+const cardsData = [
+  {
+    title: "Total Revenue",
+    value: "$0",
+    trend: "Trending up this month",
+    info: "Navigate to get an insights of revenue",
+    icon: "DollarSign",
+  },
+  {
+    title: "Users",
+    value: "0",
+    trend: "20% more than last month",
+    info: "Navigate to get an insights of users",
+    icon: "Users",
+  },
+  {
+    title: "Orders",
+    value: "0",
+    trend: "Steady performance",
+    info: "Navigate to get an insights of orders",
+    icon: "PackageCheck",
+  },
+  {
+    title: "Products",
+    value: "0",
+    trend: "Slight decrease",
+    info: "Navigate to manage your product listings",
+    icon: "Box",
+  },
+];
+
+function Page() {
   return (
-    <div>seller dashboard</div>
-  )
+    <>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-10 max-w-7xl mx-auto px-4">
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+          SELLER DASHBOARD
+        </h1>
+ 
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-10 max-w-7xl mx-auto px-4">
+        {cardsData.map((card, index) => {
+          const LucideIcon: any = LucideIcons[card.icon];
+          return (
+            <Card
+              key={index}
+              className="rounded-sm  transition-all duration-300 hover:shadow-xl hover:scale-[1.02] cursor-pointer hover:border-gray-600"
+            >
+              <CardHeader className="flex flex-row items-start font-[100%] text-gray-800 justify-between gap-2">
+                <div>
+                  <CardDescription>{card.title}</CardDescription>
+                  <CardTitle className="text-2xl font-extrabold  tabular-nums @[250px]/card:text-3xl">
+                    {card.value}
+                  </CardTitle>
+                </div>
+                {LucideIcon && (
+                  <LucideIcon className="h-6 w-15 text-muted-foreground" />
+                )}
+              </CardHeader>
+              <CardFooter className="flex-col items-start gap-1.5 text-sm">
+                <div className="line-clamp-1 flex gap-2 font-medium">
+                  {card.trend}
+                </div>
+                <div className="text-muted-foreground">{card.info}</div>
+              </CardFooter>
+            </Card>
+          );
+        })}
+      </div>
+    </>
+  );
 }
 
-export default page
+export default Page;

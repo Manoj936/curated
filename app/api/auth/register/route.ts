@@ -1,5 +1,5 @@
 
-import { userRole } from "@/app/libs/constant";
+import { sellerRole, userRole } from "@/app/libs/constant";
 import { ConnectToDB } from "@/app/libs/db";
 import UserModel from "@/app/models/User.model";
 import { NextRequest, NextResponse } from "next/server";
@@ -9,7 +9,14 @@ export async function POST(request: NextRequest) {
     const { name, email, password ,role } = await request.json();
     if (!name || !email || !password || !role) {
       return NextResponse.json(
-        { error: "name , email and password are required" },
+        { error: "name , email , password, role are required" },
+        { status: 400 }
+      );
+    }
+
+    if(role !== userRole || role !== sellerRole){
+      return NextResponse.json(
+        { error: "User can be either a customer or seller" },
         { status: 400 }
       );
     }

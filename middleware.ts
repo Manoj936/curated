@@ -50,7 +50,7 @@ export default withAuth(
         }
         // Admin routes require admin role
         if (pathname.startsWith("/seller")) {
-          return token?.role === sellerRole || token?.role === superuserRole;
+          return token?.role === sellerRole ;
         }
 
         //Superadmin routes require superadmin role
