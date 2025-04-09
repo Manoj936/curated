@@ -5,14 +5,15 @@ import Script from "next/script";
 import Providers from "./components/providers";
 import Header from "./components/Header";
 import { Poppins } from "next/font/google";
+import { Toaster } from "@/components/ui/sonner"
 export const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "600", "700"], // optional weights
 });
 
 export const metadata = {
-  title: "ImageKit Next.js Integration",
-  description: "Demo of ImageKit integration with Next.js",
+  title: "Welcome to Curated",
+  description: "Get your images , videos , ebooks licensed!",
 };
 
 export default function RootLayout({
@@ -30,6 +31,7 @@ export default function RootLayout({
         <Providers>
           <Header />
           <main>{children}</main>
+          <Toaster />
         </Providers>
       </body>
     </html>

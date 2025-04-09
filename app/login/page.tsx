@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,10 @@ import Link from "next/link";
 import { z } from "zod";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { getSession, signIn } from "next-auth/react";
+import { showToast } from "@/components/ui/toast";
+import { useRouter } from "next/navigation";
+import { sellerRole, superuserRole, userRole } from "../libs/constant";
 
 const loginFormSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -29,18 +33,46 @@ function Login() {
     handleSubmit,
     formState: { errors },
     reset,
-    
   } = useForm<FormData>({
     resolver: zodResolver(loginFormSchema),
   });
-
+  const router = useRouter();
   const onSubmit = async (data: FormData) => {
-    console.log("Form Data:", data)
-    // You can now call your API with the validated `data`
-  }
+    console.log("Form Data:", data);
+    const result = await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      redirect: false,
+    });
+    console.log(result);
+
+    if (result?.error) {
+      showToast({
+        title: result.error,
+        variant: "error",
+      });
+    } else {
+      showToast({
+        title: "Login successful!",
+        variant: "success",
+      });
+      const session = await getSession(); 
+      console.log("Session:", session);
+
+      if (session?.user?.role === userRole) {
+        router.push("/");
+      }
+      if (session?.user?.role === sellerRole) {
+        router.push("/seller");
+      }
+      if (session?.user?.role === superuserRole) {
+        router.push("/superuser");
+      }
+    }
+  };
   return (
-    <div className="max-w-md mx-auto ">
-      <Card className="w-full">
+    <div className="lg:max-w-md sm:max-w-lg mt-10 md:mt-10  mx-auto">
+      <Card className="w-full ">
         <CardHeader>
           <CardTitle className="text-3xl">Login</CardTitle>
         </CardHeader>
@@ -75,13 +107,15 @@ function Login() {
                   </p>
                 )}
               </div>
-              <Button variant="outline"  onClick={() => reset()}>Reset</Button>
-              <Button type="submit" >Login</Button>
+              <Button variant="outline" onClick={() => reset()}>
+                Reset
+              </Button>
+              <Button type="submit">Login</Button>
             </div>
           </form>
         </CardContent>
         <CardFooter className="flex justify-center items-center gap-1">
-        <small className="text-gray-500">Don't have an account?</small>
+          <small className="text-gray-500">Don't have an account?</small>
           <Link href="/register">
             <Button variant="link"> Signup</Button>
           </Link>

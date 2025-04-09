@@ -1,9 +1,20 @@
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
-import { sellerRole, superuserRole } from "./app/libs/constant";
+import { sellerRole, superuserRole, userRole } from "./app/libs/constant";
 
 export default withAuth(
-  function middleware() {
+  function middleware(req) {
+    const { pathname } = req.nextUrl;
+    const token = req.nextauth.token;
+
+    // Redirect logged-in users away from /login or /register
+    if (
+      token &&  token?.role === userRole &&
+      (pathname === "/login" || pathname === "/register")
+    ) {
+      return NextResponse.redirect(new URL("/", req.url)); // or dashboard
+    }
+
     return NextResponse.next();
   },
   {
@@ -29,7 +40,7 @@ export default withAuth(
         if (
           pathname === "/" ||
           pathname.startsWith("/api/products") ||
-          pathname.startsWith("/products")
+          pathname.startsWith("/products") 
         ) {
           return true;
         }

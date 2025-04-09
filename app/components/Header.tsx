@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import {
+  Button,
   Dialog,
   DialogPanel,
   Disclosure,
@@ -20,7 +21,13 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { ChevronDownIcon, PhoneIcon } from "@heroicons/react/20/solid";
-import { Home, User, GalleryVerticalEndIcon, DramaIcon } from "lucide-react";
+import {
+  GalleryVerticalEndIcon,
+  DramaIcon,
+  LogOutIcon,
+  LogInIconin,
+  ShoppingBasketIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { showToast } from "@/components/ui/toast";
 import { AppName } from "../libs/constant";
@@ -53,7 +60,8 @@ const callsToAction = [
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  console.log(session);
   const handleSignOut = async () => {
     try {
       await signOut();
@@ -70,12 +78,12 @@ export default function Header() {
       });
     }
   };
-  
+
   return (
-    <header className="bg-white">
+    <header className="bg-white ">
       <nav
         aria-label="Global"
-        className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
+        className="mx-auto flex max-w-7xl  items-center justify-between p-6 lg:px-8"
       >
         <div className="flex lg:flex-1">
           <Link
@@ -169,15 +177,70 @@ export default function Header() {
           <a href="#" className="text-sm/6 font-semibold text-gray-900">
             Marketplace
           </a>
-          <Link href="/seller-register" className="flex justify-between text-sm/6 font-bold text-gray-900">
+          <Link
+            href="/seller-register"
+            className="flex justify-between text-sm/6 font-bold text-gray-900"
+          >
             <DramaIcon></DramaIcon>
             Seller!
           </Link>
         </PopoverGroup>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <Link href="/login" className="text-sm/6 font-semibold text-gray-900">
-            Log in <span aria-hidden="true">&rarr;</span>
-          </Link>
+          {session && (
+            <PopoverGroup className="hidden lg:flex lg:gap-x-12">
+              <Popover className="relative">
+                <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900">
+                  Hey, {session.user?.email?.split("@")[0]}
+                  <ChevronDownIcon
+                    aria-hidden="true"
+                    className="size-5 flex-none text-gray-400"
+                  />
+                </PopoverButton>
+                <PopoverPanel
+                  transition
+                  className="absolute top-full  z-10 mt-2 overflow-hidden rounded-sm bg-white ring-1 shadow-lg ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
+                >
+                  <div className="p-2">
+                    {/* Logout */}
+                    <div
+                      onClick={handleSignOut}
+                      className="group relative flex items-left gap-x-3 rounded-lg p-4 text-sm/6 hover:bg-gray-50"
+                    >
+                      <div className="flex size-6 flex-none items-left justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                        <LogOutIcon></LogOutIcon>
+                      </div>
+                      <div className="flex-auto">
+                        <Button className="block font-semibold text-gray-900">
+                          Logout
+                          <span className="absolute inset-0" />
+                        </Button>
+                      </div>
+                    </div>
+                    {/* Orders */}
+                    <div className="group relative flex items-left gap-x-3 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
+                      <div className="flex size-6 flex-none items-left justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                        <ShoppingBasketIcon></ShoppingBasketIcon>
+                      </div>
+                      <div className="flex-auto">
+                        <Button className="block font-semibold text-gray-900">
+                          Orders
+                          <span className="absolute inset-0" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </PopoverPanel>
+              </Popover>
+            </PopoverGroup>
+          )}
+          {status !== "loading" && !session && (
+            <Link
+              href="/login"
+              className="text-sm/6 font-semibold text-gray-900"
+            >
+              Log in <span aria-hidden="true">&rarr;</span>
+            </Link>
+          )}
         </div>
       </nav>
       <Dialog
@@ -190,7 +253,6 @@ export default function Header() {
           <div className="flex items-center justify-between">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">CURATED</span>
-            
             </a>
             <button
               type="button"
@@ -237,20 +299,58 @@ export default function Header() {
                 >
                   Marketplace
                 </a>
-                <a
-                  href="#"
+                <Link
+                  onClick={() => setMobileMenuOpen(false)}
+                  href="/seller-register"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-gray-900 hover:bg-gray-50"
                 >
                   Seller!
-                </a>
+                </Link>
               </div>
               <div className="py-6">
-                <Link
-                  href="/login"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
-                >
-                  Log in
-                </Link>
+                {session && (
+                  <div className="flex gap-3 items-center justify-between">
+                    {/* Logout */}
+                    <div
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        handleSignOut();
+                      }}
+                      className="group relative flex items-left gap-x-3 rounded-lg p-4 text-sm/6 hover:bg-gray-50"
+                    >
+                      <div className="flex size-6 flex-none items-left justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                        <LogOutIcon></LogOutIcon>
+                      </div>
+                      <div className="flex-auto">
+                        <Button className="block font-semibold text-gray-900">
+                          Logout
+                          <span className="absolute inset-0" />
+                        </Button>
+                      </div>
+                    </div>
+                    {/* Orders */}
+                    <div className="group relative flex items-left gap-x-3 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
+                      <div className="flex size-6 flex-none items-left justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                        <ShoppingBasketIcon></ShoppingBasketIcon>
+                      </div>
+                      <div className="flex-auto">
+                        <Button className="block font-semibold text-gray-900">
+                          Orders
+                          <span className="absolute inset-0" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {status !== "loading" && !session && (
+                  <Link
+                    onClick={() => setMobileMenuOpen(false)}
+                    href="/login"
+                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
+                  >
+                    Log in
+                  </Link>
+                )}
               </div>
             </div>
           </div>

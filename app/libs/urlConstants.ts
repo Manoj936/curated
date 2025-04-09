@@ -1,7 +1,8 @@
-const appVersion1 = 'api/v1/';
+const appVersion = 'api/';
+
+const backendBaseUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL || 'http://localhost:3000/';
 
 export const URLConsatnts = {
- userRegistration : appVersion1 + 'register',
- selllerRegistration : appVersion1+'register/seller',
- 
-}
+  userRegistrationApiUrl: backendBaseUrl + appVersion + 'auth/register/user',
+  selllerRegistrationApiUrl: backendBaseUrl + appVersion + 'register/seller',
+};

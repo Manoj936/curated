@@ -12,8 +12,13 @@ export const getDataUsingAsyncAwaitGetCall = async (endpoint: string) => {
       const response = await axios.get(endpoint, { headers: defaultHeaders });
       resolve(response.data);
     } catch (error: any) {
-      console.log(error);
-      reject("Unexpected ERROR");
+      if (axios.isAxiosError(error) && error.response) {
+        console.log("Server Error Message:", error.response.data); // or error.response.data.error
+        reject(error.response.data); // or reject(error.response.data.error) if you want to return just the message
+      } else {
+        console.log("Unexpected Error:", error);
+        reject("Unexpected ERROR");
+      }
     }
   });
 };
@@ -38,8 +43,13 @@ export const postDataUsingServiceAndBodyData = (
         resolve(response.data);
       })
       .catch(function (error) {
-        console.log(error);
-        reject("Unexpected ERROR");
+        if (axios.isAxiosError(error) && error.response) {
+          console.log("Server Error Message:", error.response.data); // or error.response.data.error
+          reject(error.response.data); // or reject(error.response.data.error) if you want to return just the message
+        } else {
+          console.log("Unexpected Error:", error);
+          reject("Unexpected ERROR");
+        }
       });
   });
 };
