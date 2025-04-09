@@ -20,6 +20,7 @@ import { URLConsatnts } from "../libs/urlConstants";
 import LoaderComponent from "../components/Loader";
 import { showToast } from "@/components/ui/toast";
 import { useRouter } from "next/navigation";
+import { userRole } from "../libs/constant";
 
 const formSchema = z
   .object({
@@ -52,11 +53,11 @@ function Register() {
 
   const onSubmit = async (formData: FormData) => {
     try {
-      console.log( URLConsatnts.userRegistrationApiUrl , "sadadsa")
+      const reqBody = {...formData , role:userRole};
       setLoading(true);
       const res = await postDataUsingServiceAndBodyData(
-        URLConsatnts.userRegistrationApiUrl,
-        formData
+        URLConsatnts.RegistrationApiUrl,
+        reqBody
       );
       console.log(res);
 

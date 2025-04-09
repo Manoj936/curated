@@ -38,7 +38,6 @@ function Login() {
   });
   const router = useRouter();
   const onSubmit = async (data: FormData) => {
-    console.log("Form Data:", data);
     const result = await signIn("credentials", {
       email: data.email,
       password: data.password,
@@ -58,16 +57,16 @@ function Login() {
       });
       const session = await getSession(); 
       console.log("Session:", session);
-
-      if (session?.user?.role === userRole) {
-        router.push("/");
-      }
-      if (session?.user?.role === sellerRole) {
-        router.push("/seller");
-      }
-      if (session?.user?.role === superuserRole) {
-        router.push("/superuser");
-      }
+      router.push("/");
+      // if (session?.user?.role === userRole) {
+      //   router.push("/");
+      // }
+      // if (session?.user?.role === sellerRole) {
+      //   router.push("/seller");
+      // }
+      // if (session?.user?.role === superuserRole) {
+      //   router.push("/superuser");
+      // }
     }
   };
   return (

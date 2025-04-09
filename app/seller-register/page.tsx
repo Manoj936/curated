@@ -28,6 +28,7 @@ import { postDataUsingServiceAndBodyData } from "../libs/apiClinet";
 import { URLConsatnts } from "../libs/urlConstants";
 import LoaderComponent from "../components/Loader";
 import { useRouter } from "next/navigation";
+import { sellerRole } from "../libs/constant";
 
 const formSchema = z
   .object({
@@ -57,11 +58,11 @@ function SellerRegister() {
   const [isLoading, setLoading] = useState(false);
   const onSubmit = async (formData: FormData) => {
     try {
-      console.log(URLConsatnts.userRegistrationApiUrl, "sadadsa");
+      const reqBody = {...formData , role:sellerRole};
       setLoading(true);
       const res = await postDataUsingServiceAndBodyData(
-        URLConsatnts.userRegistrationApiUrl,
-        formData
+        URLConsatnts.RegistrationApiUrl,
+        reqBody
       );
       console.log(res);
 

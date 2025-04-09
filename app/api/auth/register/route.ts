@@ -1,13 +1,13 @@
 
-import { sellerRole } from "@/app/libs/constant";
+import { userRole } from "@/app/libs/constant";
 import { ConnectToDB } from "@/app/libs/db";
 import UserModel from "@/app/models/User.model";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, email, password  } = await request.json();
-    if (!name || !email || !password ) {
+    const { name, email, password ,role } = await request.json();
+    if (!name || !email || !password || !role) {
       return NextResponse.json(
         { error: "name , email and password are required" },
         { status: 400 }
@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     }
     await ConnectToDB();
     //check exisitng user or not
-    const isUserExist = await UserModel.findOne({ email , role : sellerRole });
+    const isUserExist = await UserModel.findOne({ email });
     if (isUserExist) {
       return NextResponse.json(
         { error: "Email is already registered" },
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
       name,
       email,
       password,
-      role: sellerRole, // Default role
+      role, 
     });
 
     return NextResponse.json(

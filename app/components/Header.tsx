@@ -27,10 +27,11 @@ import {
   LogOutIcon,
   LogInIconin,
   ShoppingBasketIcon,
+  LayoutDashboardIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { showToast } from "@/components/ui/toast";
-import { AppName } from "../libs/constant";
+import { AppName, sellerRole, superuserRole, userRole } from "../libs/constant";
 import { signOut, useSession } from "next-auth/react";
 
 const products = [
@@ -216,18 +217,75 @@ export default function Header() {
                         </Button>
                       </div>
                     </div>
-                    {/* Orders */}
-                    <div className="group relative flex items-left gap-x-3 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
-                      <div className="flex size-6 flex-none items-left justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                        <ShoppingBasketIcon></ShoppingBasketIcon>
-                      </div>
-                      <div className="flex-auto">
-                        <Button className="block font-semibold text-gray-900">
-                          Orders
-                          <span className="absolute inset-0" />
-                        </Button>
-                      </div>
-                    </div>
+                    {/* User  dropdowns */}
+                    {session.user?.role === userRole && (
+                      <Link
+                        href="/orders"
+                        className="group relative flex items-left gap-x-3 rounded-lg p-4 text-sm/6 hover:bg-gray-50"
+                      >
+                        <div className="flex size-6 flex-none items-left justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                          <ShoppingBasketIcon></ShoppingBasketIcon>
+                        </div>
+                        <div className="flex-auto">
+                          <Button className="block font-semibold text-gray-900">
+                            Orders
+                            <span className="absolute inset-0" />
+                          </Button>
+                        </div>
+                      </Link>
+                    )}
+
+                    {/* superuser  dropdowns */}
+                    {session.user?.role === superuserRole && (
+                      <Link
+                        href="/superuser/dashboard"
+                        className="group relative flex items-left gap-x-3 rounded-lg p-4 text-sm/6 hover:bg-gray-50"
+                      >
+                        <div className="flex size-6 flex-none items-left justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                          <LayoutDashboardIcon></LayoutDashboardIcon>
+                        </div>
+                        <div className="flex-auto">
+                          <Button className="block font-semibold text-gray-900">
+                            Dashboard
+                            <span className="absolute inset-0" />
+                          </Button>
+                        </div>
+                      </Link>
+                    )}
+
+                    {/* seller dropdowns */}
+                    {session.user?.role === sellerRole && (
+                      <>
+                        <Link
+                          href="/orders"
+                          className="group relative flex items-left gap-x-3 rounded-lg p-4 text-sm/6 hover:bg-gray-50"
+                        >
+                          <div className="flex size-6 flex-none items-left justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                            <ShoppingBasketIcon></ShoppingBasketIcon>
+                          </div>
+                          <div className="flex-auto">
+                            <Button className="block font-semibold text-gray-900">
+                              Orders
+                              <span className="absolute inset-0" />
+                            </Button>
+                          </div>
+                        </Link>
+                        <Link
+                          href="/seller/dashboard"
+                          className="group relative flex items-left gap-x-3 rounded-lg p-4 text-sm/6 hover:bg-gray-50"
+                        >
+                          <div className="flex size-6 flex-none items-left justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                            <LayoutDashboardIcon></LayoutDashboardIcon>
+                          </div>
+                          <div className="flex-auto">
+                            <Button className="block font-semibold text-gray-900">
+                              Dashboard
+                              <span className="absolute inset-0" />
+                            </Button>
+                          </div>
+                        </Link>
+                      </>
+                    )}
                   </div>
                 </PopoverPanel>
               </Popover>
