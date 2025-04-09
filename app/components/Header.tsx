@@ -25,7 +25,6 @@ import {
   GalleryVerticalEndIcon,
   DramaIcon,
   LogOutIcon,
-  LogInIconin,
   ShoppingBasketIcon,
   LayoutDashboardIcon,
 } from "lucide-react";
@@ -33,6 +32,7 @@ import Link from "next/link";
 import { showToast } from "@/components/ui/toast";
 import { AppName, sellerRole, superuserRole, userRole } from "../libs/constant";
 import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const products = [
   {
@@ -62,7 +62,7 @@ const callsToAction = [
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { data: session, status } = useSession();
-  console.log(session);
+  const router = useRouter();
   const handleSignOut = async () => {
     try {
       await signOut();
@@ -307,7 +307,7 @@ export default function Header() {
         className="lg:hidden"
       >
         <div className="fixed inset-0 z-10" />
-        <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+        <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-3 py-3 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">CURATED</span>
@@ -365,11 +365,12 @@ export default function Header() {
                   Seller!
                 </Link>
               </div>
-              <div className="py-6">
+              <div className="py-3">
                 {session && (
-                  <div className="flex gap-3 items-center justify-between">
+                  <div className="flex gap-2 items-left justify-around">
                     {/* Logout */}
-                    <div
+
+                    <Button
                       onClick={() => {
                         setMobileMenuOpen(false);
                         handleSignOut();
@@ -385,19 +386,48 @@ export default function Header() {
                           <span className="absolute inset-0" />
                         </Button>
                       </div>
-                    </div>
+                    </Button>
+
                     {/* Orders */}
-                    <div className="group relative flex items-left gap-x-3 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
-                      <div className="flex size-6 flex-none items-left justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                        <ShoppingBasketIcon></ShoppingBasketIcon>
-                      </div>
-                      <div className="flex-auto">
-                        <Button className="block font-semibold text-gray-900">
-                          Orders
-                          <span className="absolute inset-0" />
+                    {session.user?.role !== superuserRole && (
+                        <Button
+                          onClick={() => {
+                            setMobileMenuOpen(false);
+                            router.push("/orders");
+                          }}
+                          className="group relative flex items-left gap-x-3 rounded-lg p-4 text-sm/6 hover:bg-gray-50"
+                        >
+                          <div className="flex size-6 flex-none items-left justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                            <ShoppingBasketIcon></ShoppingBasketIcon>
+                          </div>
+                          <div className="flex-auto">
+                            <Button className="block font-semibold text-gray-900">
+                              Orders
+                              <span className="absolute inset-0" />
+                            </Button>
+                          </div>
                         </Button>
-                      </div>
-                    </div>
+                      )}
+                    {/* Seller dashboard */}
+                    {session.user?.role === sellerRole && (
+                      <Button
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          router.push("/seller/dashboard");
+                        }}
+                        className="group relative flex items-left gap-x-3 rounded-lg p-4 text-sm/6 hover:bg-gray-50"
+                      >
+                        <div className="flex size-6 flex-none items-left justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                          <LayoutDashboardIcon></LayoutDashboardIcon>
+                        </div>
+                        <div className="flex-auto">
+                          <Button className="block font-semibold text-gray-900">
+                            Dashboard
+                            <span className="absolute inset-0" />
+                          </Button>
+                        </div>
+                      </Button>
+                    )}
                   </div>
                 )}
                 {status !== "loading" && !session && (
