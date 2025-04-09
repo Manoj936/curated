@@ -4,5 +4,5 @@ const backendBaseUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL || 'http://localh
 
 export const URLConsatnts = {
   userRegistrationApiUrl: backendBaseUrl + appVersion + 'auth/register/user',
-  selllerRegistrationApiUrl: backendBaseUrl + appVersion + 'register/seller',
+  selllerRegistrationApiUrl: backendBaseUrl + appVersion + 'auth/register/seller',
 };
