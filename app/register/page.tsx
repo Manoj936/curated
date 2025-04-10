@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -20,7 +21,8 @@ import { URLConsatnts } from "../libs/urlConstants";
 import LoaderComponent from "../components/Loader";
 import { showToast } from "@/components/ui/toast";
 import { useRouter } from "next/navigation";
-import { userRole } from "../libs/constant";
+import { sellerRole, userRole } from "../libs/constant";
+import { DramaIcon, User2Icon } from "lucide-react";
 
 const formSchema = z
   .object({
@@ -37,7 +39,6 @@ const formSchema = z
 type FormData = z.infer<typeof formSchema>;
 
 function Register() {
-
   const {
     register,
     handleSubmit,
@@ -48,12 +49,16 @@ function Register() {
     resolver: zodResolver(formSchema),
   });
   const [isLoading, setLoading] = useState(false);
-
+  const [selectedRole, setSelectedRole] = useState<
+    typeof userRole | typeof sellerRole
+  >(userRole);
   const router = useRouter();
 
+  const isSelected = (role: string) =>
+    selectedRole === role ? "border-2 border-gray-900" : "border";
   const onSubmit = async (formData: FormData) => {
     try {
-      const reqBody = {...formData , role:userRole};
+      const reqBody = { ...formData, role: selectedRole };
       setLoading(true);
       const res = await postDataUsingServiceAndBodyData(
         URLConsatnts.RegistrationApiUrl,
@@ -66,10 +71,10 @@ function Register() {
         variant: "success",
       });
 
-      router.push('/login')
-    } catch (err : any) {
+      router.push("/login");
+    } catch (err: any) {
       showToast({
-        title: `${err ?  err.error + ' 😔😔' : 'Unexpected error 😔😔'}`,
+        title: `${err ? err.error + " 😔😔" : "Unexpected error 😔😔"}`,
         variant: "error",
       });
     } finally {
@@ -146,7 +151,45 @@ function Register() {
                     </p>
                   )}
                 </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <Card
+                    className={`rounded-sm transition-all duration-300 hover:shadow-xl hover:scale-[1.02] cursor-pointer hover:border-gray-600 ${isSelected(
+                      userRole
+                    )}`}
+                    onClick={() => setSelectedRole(userRole)}
+                  >
+                    <CardHeader className="flex flex-row items-start justify-between gap-2">
+                      <div>
+                        <CardDescription className="text-sm text-gray-600">
+                          You will be registered as
+                        </CardDescription>
+                        <CardTitle className="scroll-m-20 text-lg text-gray-900 font-extrabold tracking-tight lg:text-xl uppercase">
+                          Customer
+                        </CardTitle>
+                      </div>
+                      <User2Icon className="h-6 w-6 font-extrabold" />
+                    </CardHeader>
+                  </Card>
 
+                  <Card
+                    className={`rounded-sm transition-all duration-300 hover:shadow-xl hover:scale-[1.02] cursor-pointer hover:border-gray-600 ${isSelected(
+                      sellerRole
+                    )}`}
+                    onClick={() => setSelectedRole(sellerRole)}
+                  >
+                    <CardHeader className="flex flex-row items-start justify-between gap-2">
+                      <div>
+                        <CardDescription className="text-sm text-gray-600">
+                          You will be registered as
+                        </CardDescription>
+                        <CardTitle className="scroll-m-20 text-lg text-gray-900 font-extrabold tracking-tight lg:text-xl uppercase">
+                          Seller
+                        </CardTitle>
+                      </div>
+                      <DramaIcon className="h-6 w-6 font-extrabold" />
+                    </CardHeader>
+                  </Card>
+                </div>
                 <Button variant="outline" onClick={() => reset()}>
                   Reset
                 </Button>

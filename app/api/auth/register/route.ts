@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if(role !== userRole || role !== sellerRole){
+    if(role !== userRole && role !== sellerRole){
       return NextResponse.json(
         { error: "User can be either a customer or seller" },
         { status: 400 }

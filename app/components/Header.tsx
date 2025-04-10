@@ -183,13 +183,13 @@ export default function Header() {
             <a href="#" className="text-sm/6 font-semibold text-gray-900">
               Marketplace
             </a>
-            <Link
+            {/* <Link
               href="/seller-register"
               className="flex justify-between text-sm/6 font-bold text-gray-900"
             >
               <DramaIcon></DramaIcon>
               Seller!
-            </Link>
+            </Link> */}
           </PopoverGroup>
         )}
 
@@ -365,13 +365,6 @@ export default function Header() {
                   >
                     Marketplace
                   </a>
-                  <Link
-                    onClick={() => setMobileMenuOpen(false)}
-                    href="/seller-register"
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-gray-900 hover:bg-gray-50"
-                  >
-                    Seller!
-                  </Link>
                 </div>
               )}
               <div className="py-3">
