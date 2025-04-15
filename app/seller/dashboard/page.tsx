@@ -17,7 +17,7 @@ const cardsData = [
     value: "$0",
     trend: "Trending up this month",
     info: "Navigate to get an insights of revenue",
-    icon: "DollarSign",
+    icon: "Receipt",
     navigateTo:'/seller/revenue'
   },
 
@@ -30,12 +30,12 @@ const cardsData = [
     navigateTo:'/seller/orders'
   },
   {
-    title: "Products",
+    title: "Ebooks",
     value: "0",
     trend: "Slight decrease",
-    info: "Navigate to manage your product listings",
-    icon: "Box",
-    navigateTo:'/seller/products'
+    info: "Navigate to manage your ebooks listings",
+    icon: "BookOpen",
+    navigateTo:'/seller/ebooks'
   },
 
 ];
@@ -65,7 +65,7 @@ function Page() {
                   </CardTitle>
                 </div>
                 {LucideIcon && (
-                  <LucideIcon className="h-6 w-15 font-extrabold" />
+                  <LucideIcon className="h-18 w-15 font-extrabold" />
                 )}
               </CardHeader>
               <CardFooter className="flex-col items-start gap-1.5 text-sm">

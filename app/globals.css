@@ -8,6 +8,9 @@ body{
   padding: 0;
   overflow-x: hidden!important;
 }
+Label{
+  margin-bottom: 1rem;
+}
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

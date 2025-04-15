@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
         { error: "User can be either a customer or seller" },
         { status: 400 }
       );
-    }
+    }  
     await ConnectToDB();
     //check exisitng user or not
     const isUserExist = await UserModel.findOne({ email });
