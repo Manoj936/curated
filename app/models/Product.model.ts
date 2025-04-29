@@ -43,8 +43,10 @@ export interface IVideoProduct {
 }
 
 export interface IEbookProduct {
-  fileUrl: string; // URL to download the eBook
-  fileType: (typeof ebookFileTypes)[number]; // Supported formats
+  name: string;
+  description: string;
+  ebookFileUrl: string; // URL to download the eBook
+  ebookCoverImageUrl: string
   pages: number; // Number of pages
   author: string;
   price: number;
@@ -93,8 +95,10 @@ const VideoProductSchema = new Schema<IVideoProduct>({
 //Ebook Schema
 
 const EbookProductSchema = new Schema<IEbookProduct>({
-  fileUrl: { type: String, required: true },
-  fileType: { type: String, required: true },
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  ebookFileUrl: { type: String, required: true }, // URL to download the eBook
+  ebookCoverImageUrl: { type: String, required: true }, // URL to download the eBook cover
   pages: { type: Number, required: true },
   author: { type: String, required: true },
   price: { type: Number, required: true },

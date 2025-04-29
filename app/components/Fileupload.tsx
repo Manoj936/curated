@@ -39,9 +39,10 @@ export default function FileUpload({
   return (
     <div className="space-y-2">
       <IKUpload
-        fileName="product-image.jpg"
         onError={onError}
         onSuccess={handleSuccess}
+        publicKey={process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY!}
+        urlEndpoint={process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_URL_ENDPOINT!}
         onUploadStart={handleStartUpload}
         className="file-input file-input-bordered w-full"
         validateFile={(file: File) => {
@@ -54,7 +55,7 @@ export default function FileUpload({
               return false;
             }
             if (file.size > 2 * 1024 * 1024) {
-              // 5MB limit
+              // 2MB limit
               setError("File size must be less than 2MB");
               return false;
             }
