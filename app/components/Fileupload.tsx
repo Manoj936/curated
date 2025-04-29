@@ -7,7 +7,7 @@ import { Loader2 } from "lucide-react";
 
 const mimeTypeMap: Record<"image" | "ebook", string[]> = {
   image: ["image/jpeg", "image/png", "image/webp"],
-  ebook: ["application/pdf", "application/epub+zip"],
+  ebook: [ "application/epub+zip"],
 };
 
 export default function FileUpload({
@@ -63,7 +63,7 @@ export default function FileUpload({
           if (fileType === "ebook") {
             validTypes = mimeTypeMap.ebook;
             if (!validTypes.includes(file.type)) {
-              setError("Please upload a valid image file (pdf or epud)");
+              setError("Please upload a valid image file (epub)");
               return false;
             }
             if (file.size > 25 * 1024 * 1024) {
