@@ -10,29 +10,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+
 interface ReactReaderComponentProps {
   fileUrl: string;
   onClose: () => void;
   fileName: string;
 }
 
-type ITheme = 'light' | 'dark'
+type ITheme = 'light' | 'dark' | 'readMode';
 
-function updateTheme(rendition: Rendition, theme: ITheme) {
-  const themes = rendition.themes
-  switch (theme) {
-    case 'dark': {
-      themes.override('color', '#fff')
-      themes.override('background', '#000')
-      break
-    }
-    case 'light': {
-      themes.override('color', '#000')
-      themes.override('background', '#fff')
-      break
-    }
-  }
-}
 const ReactReaderComponent: React.FC<ReactReaderComponentProps> = ({
   fileUrl,
   onClose,
@@ -40,15 +26,36 @@ const ReactReaderComponent: React.FC<ReactReaderComponentProps> = ({
 }) => {
   const rendition = useRef<Rendition | undefined>(undefined);
   const [largeText, setLargeText] = useState(false);
-  const [theme, setTheme] = useState<ITheme>('dark')
+  const [theme, setTheme] = useState<ITheme>('dark');
   const [location, setLocation] = useState<string | number>(0);
+  const [readingOptions, setReadingOptions] = useState<any | null>(null);
+  const readerKey = JSON.stringify({ readingOptions, theme }); // reset on option/theme change
+
   useEffect(() => {
-    rendition.current?.themes.fontSize(largeText ? "140%" : "100%");
+    if (rendition.current) {
+      rendition.current.themes.fontSize(largeText ? "140%" : "100%");
+    }
   }, [largeText]);
+
+  useEffect(() => {
+    if (rendition.current) {
+      rendition.current.themes.select(theme);
+    }
+  }, [theme]);
+
   return (
-    <div className="fixed inset-0 z-50 bg-white flex flex-col h-screen">
+    <div className="fixed inset-0 z-50 flex flex-col h-screen"
+         style={{
+           backgroundColor:
+             theme === "dark"
+               ? "#000"
+               : theme === "readMode"
+               ? "#f5f0e6"
+               : "#fff",
+         }}
+    >
       {/* Cancel Button */}
-      <div className="p-3 flex justify-end bg-gray-100 shadow">
+      <div className="p-1 flex justify-center  bg-gray-100 shadow" >
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline">Options</Button>
@@ -61,13 +68,38 @@ const ReactReaderComponent: React.FC<ReactReaderComponentProps> = ({
               Close
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-           
+
             <DropdownMenuItem onClick={() => setLargeText(!largeText)}>
-              Toogle Size
+              Toggle Font Size
             </DropdownMenuItem>
 
-            <DropdownMenuItem onClick={() => console.log("Logout clicked")}>
-              Dark Mode
+            <DropdownMenuItem
+              onClick={() => {
+                const newTheme =
+                  theme === "dark"
+                    ? "light"
+                    : theme === "light"
+                    ? "readMode"
+                    : "dark";
+                setTheme(newTheme);
+              }}
+            >
+              Switch Theme ({theme})
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              onClick={() => {
+                if (readingOptions == null) {
+                  setReadingOptions({
+                    flow: "scrolled",
+                    manager: "continuous",
+                  });
+                } else {
+                  setReadingOptions(null);
+                }
+              }}
+            >
+              Change Orientation
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -76,21 +108,51 @@ const ReactReaderComponent: React.FC<ReactReaderComponentProps> = ({
       {/* Reader */}
       <div className="flex-1">
         <ReactReader
+          key={readerKey}
           url={fileUrl}
           title={fileName}
           location={location}
           locationChanged={(loc: string) => setLocation(loc)}
-          //readerStyles={theme === 'dark' ? darkReaderTheme : lightReaderTheme}
           getRendition={(_rendition: Rendition) => {
             rendition.current = _rendition;
-            rendition.current.themes.fontSize(largeText ? "140%" : "100%");
+
+            const themes = _rendition.themes;
+
+            themes.register("light", {
+              body: {
+                padding:0,
+                marign:0,
+                background: "#ffffff",
+                color: "#000000",
+              },
+            });
+
+            themes.register("dark", {
+              body: {
+                padding:0,
+                marign:0,
+                background: "#0d0c0c",
+                color: "#ffffff",
+              },
+            });
+
+            themes.register("readMode", {
+              body: {
+                padding:0,
+                marign:0,
+                background: "#f5f0e6",
+                color: "#333333",
+              },
+            });
+
+            themes.select(theme);
+            themes.fontSize(largeText ? "140%" : "100%");
           }}
+          epubOptions={readingOptions}
         />
       </div>
     </div>
   );
 };
-
-
 
 export default ReactReaderComponent;
