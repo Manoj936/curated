@@ -39,4 +39,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 ![App Screenshot](./public/ss1.png)
 ![App Screenshot](./public/ss2.png)
 ![App Screenshot](./public/ss3.png)
-![App Screenshot](./public/ss4.png)
+![App Screenshot](./public/ss5.png)
